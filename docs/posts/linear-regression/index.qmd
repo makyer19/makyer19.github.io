@@ -1,0 +1,10 @@
+---
+title: Linear Regression Blogpost
+author: Michael Alex Kyer
+date: 9/25/2023
+format:
+  html:
+    code-fold: true
+jupyter: python3
+---
+
