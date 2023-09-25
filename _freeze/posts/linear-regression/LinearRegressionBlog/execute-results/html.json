@@ -1,0 +1,11 @@
+{
+  "hash": "6108b8f2ea81985ce1c31596dc989a7f",
+  "result": {
+    "markdown": "---\ntitle: Linear Regression Blogpost\nauthor: Michael Alex Kyer\ndate: 9/25/2023\nformat:\n  html:\n    code-fold: true\n---\n\n",
+    "supporting": [
+      "LinearRegressionBlog_files"
+    ],
+    "filters": [],
+    "includes": {}
+  }
+}
