@@ -1,7 +1,7 @@
 ---
 title: Linear Regression Blogpost
 author: Michael Alex Kyer
-date: 9/25/2023
+date: 9/26/2023
 format:
   html:
     code-fold: true
@@ -122,4 +122,8 @@ print("The predicted score for a red wine with a residual sugar amount of 12 is 
 ```
 
 Observing the results of our regression analysis, we see that it is extremely difficult to predict the quality score of a red wine based on the amount of residual sugar within. We once again show this in 3 ways. First, the correlation value is almost 0. Secondly, the line of regression is almost horizontal. Thirdly, predicting the quality score of different red wines with different amounts of residual sugar provides almost identical scoring. With these 3 things in mind, we can infer that the amount of residual sugar is not a good metric to infer the quality score of a red wine.
+
+And that concludes this post regarding (linear) regression. If you would like more information on linear regression, or regression in general, check out these sources that I also utilized in the making of this blog post:
+Harvard Business Review - A Refresher on Regression Analysis (https://hbr.org/2015/11/a-refresher-on-regression-analysis)
+IMSL - What Is a Regression Model? (https://www.imsl.com/blog/what-is-regression-model)
 

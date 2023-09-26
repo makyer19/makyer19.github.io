@@ -189,7 +189,7 @@ How to Use a Regression Model
 Linear Regression Example: An Analysis of Red Wine Quality
 </h1><h1>
 <p>In this next example, we will use code to perform a regression analysis on data provided by UC Irvine on how a variety of factors affect red wine quality.</p>
-<div class="cell" data-tags="[]" data-execution_count="45">
+<div class="cell" data-tags="[]" data-execution_count="1">
 <details>
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> sys</span>
@@ -206,7 +206,7 @@ Linear Regression Example: An Analysis of Red Wine Quality
 <pre><code>Requirement already satisfied: ucimlrepo in /Users/alexkyer/anaconda3/lib/python3.11/site-packages (0.0.1)</code></pre>
 </div>
 </div>
-<div class="cell" data-tags="[]" data-execution_count="50">
+<div class="cell" data-tags="[]" data-execution_count="2">
 <details>
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>wine_quality <span class="op">=</span> pd.read_csv(<span class="st">"winequality-red.csv"</span>)</span>
@@ -231,11 +231,11 @@ Linear Regression Example: An Analysis of Red Wine Quality
 <span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-display">
-<p><img src="LinearRegressionBlog_files/figure-html/cell-3-output-1.png" class="img-fluid"></p>
+<p><img src="index_files/figure-html/cell-3-output-1.png" width="593" height="434"></p>
 </div>
 </div>
 <p>With the above plot, we observe a graph representation of the wine dataset. We have plotted a point for each entry in the provided CSV file with an x-value equal to the alchohol percentage, and a y-value equal to the quality score. Based on observing the visual graph alone, we can begin to make assumptions regarding the data, but we can go further by utilizing regression.</p>
-<div class="cell" data-tags="[]" data-execution_count="65">
+<div class="cell" data-tags="[]" data-execution_count="3">
 <details>
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> LinearRegression()</span>
@@ -260,16 +260,16 @@ Linear Regression Example: An Analysis of Red Wine Quality
 <div class="cell-output cell-output-stdout">
 <pre><code>The correlation of alcohol percent to wine quality is 0.48
 The predicted score for a red wine with an alcohol percentage of 8.5 is 4.94
-The predicted score for a red wine with an alcohol percentage of 8.5 is 5.88
-The predicted score for a red wine with an alcohol percentage of 8.5 is 7.18</code></pre>
+The predicted score for a red wine with an alcohol percentage of 11.1 is 5.88
+The predicted score for a red wine with an alcohol percentage of 14.7 is 7.18</code></pre>
 </div>
 <div class="cell-output cell-output-display">
-<p><img src="LinearRegressionBlog_files/figure-html/cell-4-output-2.png" class="img-fluid"></p>
+<p><img src="index_files/figure-html/cell-4-output-2.png" width="576" height="429"></p>
 </div>
 </div>
 <p>Utilizing the sklearn library, we can gather additional information regarding the relationship between alcohol percentage and the quality score given to the wine. First, we observe the correlation of these variables is approximately 0.48. This means that there is a moderate, positive correlation between these values. This fact is further shown when plotting a regression line on top of the graph. We see that this line is at a positive diagonal, and here we can infer that a red wine with a higher alcohol percentage will likely have a higher score than a red wine with a lower alcohol percentage. This fact is further illustrated by utilizing the sklearn predict method. This method will use the existing data and the regression line to predict the y-value of an x-value added to the set. Here, we have predicted the quality score for red wines with an alcohol percentage of 8.5, 11.1, and 14.7. The predicted scores increased as the theoretical alcohol percetage values increased, and this is yet another way to visualize the relationship between alcohol percentage and the quality score of red wine.</p>
 <p>With this in mind, let’s repeat this process with another independent variable provided in the data set, the amount of residual sugar. Repeating this process can provide us with a correlation between the amount of residual sugar and the quality score.</p>
-<div class="cell" data-tags="[]" data-execution_count="88">
+<div class="cell" data-tags="[]" data-execution_count="4">
 <details>
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>residual_sugar <span class="op">=</span> []</span>
@@ -309,7 +309,7 @@ The predicted score for a red wine with an alcohol percentage of 8.5 is 7.18</co
 <span id="cb6-35"><a href="#cb6-35" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"The predicted score for a red wine with a residual sugar amount of 12 is </span><span class="sc">%.2f</span><span class="st">"</span> <span class="op">%</span> model.predict(X_3)[<span class="dv">0</span>][<span class="dv">0</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-display">
-<p><img src="LinearRegressionBlog_files/figure-html/cell-5-output-1.png" class="img-fluid"></p>
+<p><img src="index_files/figure-html/cell-5-output-1.png" width="585" height="434"></p>
 </div>
 <div class="cell-output cell-output-stdout">
 <pre><code>The correlation of amount of residual sugar to wine quality is 0.01
@@ -318,7 +318,7 @@ The predicted score for a red wine with a residual sugar amount of 8 is 5.68
 The predicted score for a red wine with a residual sugar amount of 12 is 5.71</code></pre>
 </div>
 <div class="cell-output cell-output-display">
-<p><img src="LinearRegressionBlog_files/figure-html/cell-5-output-3.png" class="img-fluid"></p>
+<p><img src="index_files/figure-html/cell-5-output-3.png" width="577" height="429"></p>
 </div>
 </div>
 <p>Observing the results of our regression analysis, we see that it is extremely difficult to predict the quality score of a red wine based on the amount of residual sugar within. We once again show this in 3 ways. First, the correlation value is almost 0. Secondly, the line of regression is almost horizontal. Thirdly, predicting the quality score of different red wines with different amounts of residual sugar provides almost identical scoring. With these 3 things in mind, we can infer that the amount of residual sugar is not a good metric to infer the quality score of a red wine.</p>
