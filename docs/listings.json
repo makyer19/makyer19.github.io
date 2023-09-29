@@ -2,6 +2,7 @@
   {
     "listing": "/index.html",
     "items": [
+      "/posts/ensemble-models/EnsembleModels.html",
       "/posts/linear-regression/index.html"
     ]
   }
