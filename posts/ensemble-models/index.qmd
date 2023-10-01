@@ -93,12 +93,12 @@ Here we will split our data into a train and test set. We will first train our m
 #| tags: []
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2)
 
-rf = RandomForestClassifier()
-rf.fit(X_train, y_train)
+randomForest = RandomForestClassifier()
+randomForest.fit(X_train, y_train)
 
-y_pred = rf.predict(X_test)
+y_prediction = randomForest.predict(X_test)
 
-accuracy = accuracy_score(y_test, y_pred)
+accuracy = accuracy_score(y_test, y_prediction)
 print("Accuracy:", accuracy)
 ```
 
@@ -110,15 +110,15 @@ Next we will attempt to improve our accuracy by passing in random sets of hyperp
 param_dist = {'n_estimators': randint(50,500),
               'max_depth': randint(1,20)}
 
-rf = RandomForestClassifier()
+randomForest = RandomForestClassifier()
 
-rand_search = RandomizedSearchCV(rf, param_distributions = param_dist, n_iter=5, cv=5)
+randomSearch = RandomizedSearchCV(randomForest, param_distributions = param_dist, n_iter=5, cv=5)
 
-rand_search.fit(X_train, y_train)
+randomSearch.fit(X_train, y_train)
 
-best_rf = rand_search.best_estimator_
+best_estimators = randomSearch.best_estimator_
 
-print('Best hyperparameters:',  rand_search.best_params_)
+print('Best hyperparameters:',  randomSearch.best_params_)
 ```
 
 ### Using the Best Hyperparameters to Make Predictions
@@ -127,16 +127,16 @@ With the set of the best hyperparameters, we will again test the model against o
 ```{python}
 #| tags: []
 # Generate predictions with the best model
-y_pred = best_rf.predict(X_test)
+y_prediction = best_estimators.predict(X_test)
 
 # Create the confusion matrix
-cm = confusion_matrix(y_test, y_pred)
+confusionMatrix = confusion_matrix(y_test, y_prediction)
 
-ConfusionMatrixDisplay(confusion_matrix=cm).plot();
+ConfusionMatrixDisplay(confusion_matrix=confusionMatrix).plot();
 
-accuracy = accuracy_score(y_test, y_pred)
-precision = precision_score(y_test, y_pred)
-recall = recall_score(y_test, y_pred)
+accuracy = accuracy_score(y_test, y_prediction)
+precision = precision_score(y_test, y_prediction)
+recall = recall_score(y_test, y_prediction)
 
 print("Accuracy:", accuracy)
 print("Precision:", precision)
@@ -145,9 +145,13 @@ print("Recall:", recall)
 
 ```{python}
 #| tags: []
-feature_importances = pd.Series(best_rf.feature_importances_, index=X_train.columns).sort_values(ascending=False)
+predictorPlot = pd.Series(best_estimators.feature_importances_, index=X_train.columns).sort_values(ascending=False)
+predictorPlot.plot(x="year", y="people")
+plt.xlabel("year",  size = 20)
+plt.ylabel("Mean decrease in impurity", size = 20)
+plt.title("Feature Importances of Determining Upper Half of Billionaries", size = 25)
 
-feature_importances.plot.bar();
+predictorPlot.plot.bar();
 ```
 
 ### Interpreting the Data
@@ -169,5 +173,4 @@ dataiku's Blog - Tree-Based Models: How They Work (In Plain English!) (https://b
 datacamp - Random Forest Classification with Scikit-Learn (https://www.datacamp.com/tutorial/random-forests-classifier-pythonRandom Forest Classification with Scikit-Learn)
 
 Billionaires Dataset Used - Billionaires Statistics Dataset (2023) by Nidula Elgiriyewithana (https://www.kaggle.com/datasets/nelgiriyewithana/billionaires-statistics-dataset/data)
-
 

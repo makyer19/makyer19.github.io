@@ -1,0 +1,145 @@
+---
+title: Error Analysis
+author: Michael Alex Kyer
+date: 10/01/2023
+format:
+  html:
+    code-fold: true
+jupyter: python3
+---
+
+# How to Perform an Error Analysis
+When performing an error analysis, there is a multitude of things to look for in determining the strength of your model. When a model is created, it will train by mapping a set of x-values to a set of y-values. These sets are known as the training sets. Two other sets are set aside to be used as test sets in order to test the model. The test set of x-values can then be passed into the model to get a set of predicted y-values. Finally, these predicted y-values are compared to the other set of set aside y-values to determine the strength of the model. One of the best ways to compare the predicted y-values to actual y-values is throught the utilization of a confusion matrix.
+
+# What is a Confusion Matrix
+In essence, a confusion matrix is a plot that maps a set of actual values to the set of predicted values. Here, the x axis is typically attributed to the predicted label, amd the y axis is typically attributed to the true label. To begin we will first discuss how a confusion matrix can assist the error analysis of a model trained with a binary classifier. In this case, a predicted, true y-value pair could have 4 options. The value was predicted to be false, and it was actually false; the value was predicted to be false, and it was true; the value was predicted to be true, and it was false; and the value was predicted to be true, and it was true. Before explaining further, we will create and example to show.
+
+# Creating a Confusion Matrix - Determining a Penguin's Sex By Size
+### Import the Libraries
+
+```{python}
+#| tags: []
+import sys
+import matplotlib.pyplot as plt
+import numpy as np
+import pandas as pd
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.metrics import accuracy_score, confusion_matrix, precision_score, recall_score, ConfusionMatrixDisplay
+from sklearn.model_selection import train_test_split
+```
+
+### Preprocessing
+
+```{python}
+#| tags: []
+penguins_data = pd.read_csv("penguins.csv")
+
+penguins_data = penguins_data.drop('studyName', axis=1)
+penguins_data = penguins_data.drop('Sample Number', axis=1)
+penguins_data = penguins_data.drop('Species', axis=1)
+penguins_data = penguins_data.drop('Region', axis=1)
+penguins_data = penguins_data.drop('Island', axis=1)
+penguins_data = penguins_data.drop('Stage', axis=1)
+penguins_data = penguins_data.drop('Individual ID', axis=1)
+penguins_data = penguins_data.drop('Date Egg', axis=1)
+penguins_data = penguins_data.drop('Comments', axis=1)
+
+penguins_data.dropna(inplace=True)
+
+penguins_data['Sex'] = penguins_data['Sex'].replace({"MALE":0,"FEMALE":1,".":1})
+penguins_data['Clutch Completion'] = penguins_data['Clutch Completion'].replace({"No":0,"Yes":1})
+
+def makeBinary(value, median):
+    if int(value) <= median:
+        return 0
+    else:
+        return 1
+    
+penguins_data['Body Mass (g)'] = penguins_data['Body Mass (g)'].apply(makeBinary, median=penguins_data['Body Mass (g)'].median())
+
+X = penguins_data.drop('Sex', axis=1)
+y = penguins_data['Sex']
+```
+
+### Training and Testing our Model
+
+```{python}
+#| tags: []
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2)
+
+randomForest = RandomForestClassifier()
+randomForest.fit(X_train, y_train)
+
+y_prediction = randomForest.predict(X_test)
+
+confusionMatrix = confusion_matrix(y_test, y_prediction)
+
+ConfusionMatrixDisplay(confusion_matrix=confusionMatrix).plot();
+```
+
+### Analyzing the Confusion Matrix
+Above we can see the confusion matrix of our model that determines the sex of a penguin based on a variety of factors such as flipper length, body mass, etc. We can simply observe this using the plot, but it becomes easier to analyze once we define a couple terms. Before that, let us first talk about the matrix in general. By the labels, the x axis is the predicted label while the y is the true label. The top left box is reserved for entries that were predicted to be negative, and the actual result was negative. The top right is for entires that were predicted positive, but they were actually negative. The bottom left is for entries predicted negative, but they were actually positive. Finally, the bottom right is for entries predicted positive, and they were actually positive. For our model specifically, negative corresponds to a male pengiun, and positive corresponds to a female penguin.
+
+### Accuracy
+Accuracy is the test of overall correctness. To calculate the accuracy value, it is the number of correct prediction over the total number of predictions. This is the most general way to determine how good your model is at correctly predicting values.
+
+${\displaystyle \mathrm {ACC} ={\frac {\mathrm {TP} +\mathrm {TN} }{\mathrm {P} +\mathrm {N} }}={\frac {\mathrm {TP} +\mathrm {TN} }{\mathrm {TP} +\mathrm {TN} +\mathrm {FP} +\mathrm {FN} }}}$
+
+Explained in words, the value in the top left and the bottom right is divided by the sum of all values.
+
+```{python}
+#| tags: []
+accuracy = accuracy_score(y_test, y_prediction)
+print("Accuracy:", accuracy)
+```
+
+As we can see, our model has a ~90% accuracy. We can determine how good this is by comparing it to a naive model. A naive model would likely pick positive every time, negative every time, or a random value every time. As this is a binary classifier, the naive model would likely have something close to a 50% success rate. Comparing this to our model with ~90% accuracy, we can say that our model is performing fairly well.
+
+### Precision
+Precision is the comparison of true positives to the number of all predicted positives.
+
+${\displaystyle \mathrm {P} ={\frac {\mathrm {TP} }{\mathrm {TP} +\mathrm {FP} }} }$
+
+```{python}
+#| tags: []
+precision = precision_score(y_test, y_prediction)
+print("Precision:", precision)
+```
+
+Our precision is slightly higher than our accuracy at ~92% precision. With our model, this means that if we predict a penguin is a female, it will be right 92% of the time. To show this is important, let's say there is to be a study on penguin births, and so all female penguins are to be tagged. These tags are quite expensive, so it is important that we don't waste any on male penguins. With a 92% precision, we can be confident that we will not waste that many tags!
+
+### Recall/Sensitivity
+Recall is similar to precision, but there is one key difference. Instead of comparing true postives to all predicted positives, we are looking at comparing all true positives to all actual positives. It should also be noted that recall has other terms that can be used interchangably such as sensitivity and true positive rate.
+
+${\displaystyle \mathrm {TPR} ={\frac {\mathrm {TP} }{\mathrm {P} }}={\frac {\mathrm {TP} }{\mathrm {TP} +\mathrm {FN} }}=1-\mathrm {FNR} }$
+
+```{python}
+#| tags: []
+recall = recall_score(y_test, y_prediction)
+print("Recall:", recall)
+```
+
+Our recall value is ~86%. Let's put this number in the context of our model and the same scenario used to describe precision. We want to tag all female penguins as to not lose any data. With this recall, we wll tag 86% of all females.
+
+### Specificity
+The inverse of recall or sensitivity is specificity. This is also known as the true negative rate.
+
+${\displaystyle \mathrm {TNR} ={\frac {\mathrm {TN} }{\mathrm {N} }}={\frac {\mathrm {TN} }{\mathrm {TN} +\mathrm {FP} }}=1-\mathrm {FPR} }$
+
+There is no sklearn metric function for calculating specificity, but we can easily calculate it using the function above. This would be useful in the context of our model for in a scenario like the one discussed for recall, but instead of females it would be males.
+
+### How To Use These Values
+Oftentimes we may want to use a model that prioritizes certain values. Accuracy is likely always desired to be high, but what about precision or recall. Let's think about this in the context of our previous tagging example. Before we stated that the tags we quite expensive, so let's keep that as the case. With that in mind, precision would likely be prioritized more than recall. The reason for this is that we care more about not waste expensive tags on males than having every female tagged. On the other hand, let's say that tags are very inexpensive and a lot of them are available. In this case, we would prefer to have as much data as possible by tagging every female, and allowing some males to be tagged as well. This scenario would prefer recall over precision. In general though, we would prefer each of these values to be high.
+
+# Non Binary Classifier Models
+Of course, some models have multiple possible y-values. In these cases, it is just as easy to make the confusion matrix, but it is slightly harder to interpret. With the sklearn metrics library, the functions given make it simple, but in general it is harder to the naked eye. It is still possible by taking the sum of multiple boxes instead of just one, but it is much easier to use the functions provided.
+
+# Conclusion
+With all of these terms in mind, we can much more easily analyze our models and how good they are in different areas. Creating a confusion matrix is easy, but analyzing it is a bit difficult to the naked eye. That being said, with the use of some formulas we can calculate the accuracy, precision, recall, and a multitude of other values not discussed here. These values make analysis of the model much easier. Of course, we would prefer our model to have great accuracy, precision, and recall, but that is likely not always possible. In general it is best to prioritize accuracy, but there are situation when precision or recall would be preferred over the other.
+
+If you would like to learn more about error analysis, you can look into these other sources I used in the writing of this blogpost.
+
+Mage - Guide to accuracy, precision, and recall (https://www.mage.ai/blog/definitive-guide-to-accuracy-precision-recall-for-product-developers)
+Wikipedia - Confusion Matrix (https://en.wikipedia.org/wiki/Confusion_matrix)
+Analytics Vidhya - Precision and Recall | Essential Metrics for Machine Learning (2023 Update) (https://www.analyticsvidhya.com/blog/2020/09/precision-recall-machine-learning/)
+
