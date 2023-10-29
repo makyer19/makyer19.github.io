@@ -45,7 +45,6 @@ To begin, we will utilize the Pandas scatter plot functions to create 4 scatter 
 
 ```{python}
 #| tags: []
-penguins_data.info()
 penguins_data.plot.scatter(x='culmen_length_mm',y='species')
 penguins_data.plot.scatter(x='culmen_depth_mm',y='species')
 penguins_data.plot.scatter(x='flipper_length_mm',y='species')
