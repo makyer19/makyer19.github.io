@@ -2,6 +2,7 @@
   {
     "listing": "/index.html",
     "items": [
+      "/posts/probability-theory/ProbabilityDistribution.html",
       "/posts/error-analysis/index.html",
       "/posts/ensemble-models/index.html",
       "/posts/linear-regression/index.html"
