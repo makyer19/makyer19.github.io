@@ -1,0 +1,95 @@
+---
+title: Probability theory and random variables
+author: Michael Alex Kyer
+date: 10/29/2023
+format:
+  html:
+    code-fold: true
+jupyter: python3
+---
+
+### What is Probability Theory?
+Probability theory, as defined by Brown University, is "the mathematical framework that allows us to analyze chance events in a logically sound manner." Chance events occur all the time, and they can be found in any instance where one or more possibilities can result. One common example is within flipping a coin. There is a 50% chance that the coin lands on heads, and 50% it lands on tails (assuming the coin is fair). Another classic example is drawing a card from a 52 card deck. There is a 1/52 chance of drawing any one specific card, but there are different odds for drawing a card of a specific color, suit, or kind. Now those are just common examples, so there are many others that we can observe.
+
+### What are Random Variables?
+Also defined by Brown University, a random variable is "a function that assigns a real number to each outcome in the probability space." This definition is a little abstract in and of itself, but we can make it a bit clearer. Whenever any chance event occurs, there are multiple possible outcomes, and each outcome has a percent chance of occurring. Let's apply this to our previous flip a coin example, more specifically, the odds of flipping heads. Here the random variable equation would be P(X = heads) = f(x). Here, P stands for 'the probability of,' and X is the random variable or the result of the chance event. Therefore, the left side of the equation reads as, 'the probability that the chance event of a coin flip lands on heads.' The right side of the equation is the function that gives us the resulting probability that the left hand side does occur. In the case of a coin flip, we know this function results in a flat 50% for heads or tails, but it can get much more complex than this.
+
+### Applying Probability to a Naive Bayes Classifier
+The Naive Bayes Classifier is a fairly simple model used in machine learning. The model essentially uses Bayes' Theorem to generate its predictions. Bayes' Theorem is an equation that is used to obtain the probability that the hypothesis h occurs given that D has also occurred. Think of h as the y variable, and D as the random variable. Let's observe this in the lens of one of our earlier examples. The coin flip is not very interesting, so let's instead use the draw a card. Let us think of the problem, "What is the probability that the card is red given that a queen was drawn?" Here, h is the 'card is red,' and D is the 'given that a queen was drawn.'
+
+![image.png](attachment:4e8fc975-dbe9-40c2-8478-702a1d5abe9f.png)![image.png](attachment:2c842424-3eb8-4eab-9bf1-aa33189eb227.png)
+
+Above we see the equation for Bayes' Theorem. Of course, we can begin by looking at the card scenario, but instead we will look at the utilization of Bayes' Theorem using penguins.
+
+### Naive Bayes Classifier Applied to Penguins
+We will attempt to use Bayes' Theorem and a Naive Bayes Classifer to make predictions on a penguins species by the island they reside on, the culmen length, culmen depth, flipper length, and body mass. Before any of that, we will first import the dataset and all required libraries.
+
+```{python}
+#| tags: []
+import matplotlib.pyplot as plt
+import pandas as pd
+import seaborn as sns
+from sklearn.model_selection import train_test_split
+from sklearn.naive_bayes import GaussianNB
+from sklearn.metrics import accuracy_score, confusion_matrix, ConfusionMatrixDisplay, f1_score
+```
+
+```{python}
+#| tags: []
+penguins_data = pd.read_csv('penguins_size.csv')
+penguins_data = penguins_data.dropna()
+```
+
+### Use Scatterplots to Observe Best Predictors
+To begin, we will utilize the Pandas scatter plot functions to create 4 scatter plots. Each scatter plot will plot a penguin's characteristic against its species. We can then observe these plots to observe if we can find any useful predictors before even creating the model.
+
+```{python}
+#| tags: []
+penguins_data.info()
+penguins_data.plot.scatter(x='culmen_length_mm',y='species')
+penguins_data.plot.scatter(x='culmen_depth_mm',y='species')
+penguins_data.plot.scatter(x='flipper_length_mm',y='species')
+penguins_data.plot.scatter(x='body_mass_g',y='species')
+```
+
+### Analyzing the Scatter Plots
+Looking at the scatter plots, we find multiple useful predictors. First of all, it seems quite easy to differentiate between Gentoo and Adelie penguins as each of their measured traits appear to oppose one another. Adelie have a lower body mass while Gentoo are heavier. Adelie have shorter flippers and culmen, while Gentoo have longer flippers and culmen. Finally, Adelie generally have greater culmen depth while Gentoo do not. Therefore, a penguin with a low body mass, short flipper, short culmen, and large culmen depth, is likely to be an Adelie. However, Chinstrap penguins tend to be quite similar to Adelie penguins in each measurment, except for culmen length which is more similar to the Gentoo. Therefore, by these scatterplots alone, we can determine that, assuming the model functions correctly, the accuracy should be relatively high as the predictors seem to be quite good. Remember that Bayes' Theorem is essentially predicting y based on a hypothesis given that some data has already occurred. In our case, the model will be asked questions such as "What is the probability that the penguin is of the Adelie species given a low body mass, shorted flipper length, short culmen length, and a large culmen depth?" Using multiple instances of Bayes' Theorem, we can say there is a high probability that the given penguin is in fact of the Adelie species. This is just one example, but it is essentially how the model will work behind the scenes.
+
+### Using a Naive Bayes Classifier to Predict a Penguins Species
+Now that we have looked at the raw data, we will use that data to create a model to predict a penguin's species by their measurments. To begin, we will replace all of the non numerical data with numerical data to allow it to be used in the model creation. Then we will split the data into training and test sets using train_test_split(). Then we will create a GaussianNB (Gaussian Naive Bayes) model, and train it. Finally, we will make our predictions using the model and analyze the results.
+
+```{python}
+#| tags: []
+penguins_data['species'] = penguins_data['species'].replace({"Adelie":0,"Chinstrap":1,"Gentoo":2})
+penguins_data['island'] = penguins_data['island'].replace({"Torgersen":0,"Biscoe":1,"Dream":2})
+penguins_data['sex'] = penguins_data['sex'].replace({"MALE":0,"FEMALE":1,".":1})
+penguins_data.head()
+
+X = penguins_data.drop('species', axis=1)
+y = penguins_data['species']
+
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.33, random_state=125)
+
+model = GaussianNB()
+
+model.fit(X_train, y_train)
+
+y_pred = model.predict(X_test)
+
+accuray = accuracy_score(y_pred, y_test)
+print("Accuracy:", accuray)
+
+cm = confusion_matrix(y_test, y_pred)
+disp = ConfusionMatrixDisplay(confusion_matrix=cm)
+disp.plot();
+```
+
+### Analyzing the Results of the Model
+Looking at the results of the model, we see that it performed relatively well. We can say this by comparing it to a Naive Dummy Classifier which would make a random prediction each time. By that, a Dummy Classifier would be correct ~33% of the time as each prediction would be random. Comparing the 33% to our model's ~93% accuracy, we can say that our model does perform relatively well. We can also create a confusion matrix to see where our model went wrong. The diagonal from the top left to bottom right are the correctly predicted values, whereas every other box is an incorrect value. Most of these boxes have values of 0, meaning no wrong predictions were made. However, the center box on the top row does have a significant number of incorrectly predicted entries. This box is reserved for entries that were predicted to be Chinstrap penguins, but they were actually Adelie penguins. This makes sense, as the only predictor that differentiates a Chinstrap from an Adelie is the penguin's culmen length. Chinstrap penguins typically have a longer culmen than Adelie, but if a Chinstrap happens to have an culmen on the shorter side, then the prediction between Chinstrap and Adelie becomes all but random.
+
+### Conclusion
+After discussing the basics of probability theory, random variables, and Bayes' Theorem, we can see how all of that can be utilized in the context of machine learning. Of course, this is only the tip of the statistical/machine learning iceberg, but if you would like to observe some of the resources I used in the creation of this blog post, I will link them here.
+Pengiun Dataset - https://www.kaggle.com/datasets/parulpandey/palmer-archipelago-antarctica-penguin-data/
+Brown University Probability Theory - https://seeing-theory.brown.edu/basic-probability/index.html
+Naive Bayes Classifier Learning Tutorial - https://www.datacamp.com/tutorial/naive-bayes-scikit-learn
+
