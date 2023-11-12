@@ -12,7 +12,7 @@ jupyter: python3
 Clustering is a method of unsupervised machine learning. The goal is to group, or cluster, sets of data points within a distribution. Based on these different clusters, information can be inferred as to what it means to be in one group or another.
 
 ### Clustering Compared to Classification
-At a first glance, clustering and classification may appear to be quite similar. The difference lies in that while classification tends to have predefined sets of categories that points will be placed into, clustering instead groups points by similarities. Therefore, as classification uses predefined labels, it is typically used in supervised learning. On the other hand, clustering data is not labelled, and so it is used during unsupervised learning.
+At a first glance, clustering and classification may appear to be quite similar. The difference lies in that while classification tends to have predefined sets of categories that points will be placed into, clustering instead groups points by similarities. Therefore, as classification uses predefined labels, it is typically used in supervised learning. On the other hand, clustering data is not labeled, and so it is used during unsupervised learning.
 
 ### Types of Clustering
 There are multiple different methods of clustering.
@@ -23,7 +23,7 @@ Density based clustering places points of high density into randomly constructed
 
 Distribution based clustering takes input data of distributions and takes the distance from each point to the center of each other distribution. The probability that a point is within a certain distribution is lower the further it is from a distributions center.
 
-Hierarchical clustering involves creating a tree of clusters based on heirarchical data. This often leads to clusters being placed within other clusters.
+Hierarchical clustering involves creating a tree of clusters based on hierarchical data. This often leads to clusters being placed within other clusters.
 
 # The K-means Algorithm
 As stated previously, the K-means algorithm is a centroid based clustering algorithm that separates the points into K different clusters each with a center. In this case, the centroids are determined at random, and each centroid is chosen from the list of points given. Therefore, the biggest variable here is the number, K, clusters we are looking for. The algorithm can be optimized easily by repeatedly changing K until the sum of the squared distance between each point and the closest centroid is minimized. After randomly selecting the centroids, each point is placed into the cluster of its nearest centroid. From there, the actual center of each cluster is calculated by averaging coordinate values, and those centers become the new centroids. Finally, each point is again placed into the cluster that the nearest centroid is assigned to.
@@ -74,9 +74,9 @@ Observing the cluster scatter plot shown above, we can clearly see the 3 differe
 With all this in mind, we can see how clustering can be utilized in machine learning to make predictions or analyze data that do not have any specified clusters. Whether the data set is too large to label each point with a classifier, or there are no classifiers available, we can still analyze the data in a useful way. I hope you were able to learn some information about clustering from this blogpost. If you would like to learn more, you can visit these resources that I used in the formulation of this blogpost. 
 
 Pengiun Dataset - (https://www.kaggle.com/datasets/parulpandey/palmer-archipelago-antarctica-penguin-data/) \
-explorium: Clustering — When You Should Use it and Avoid It (https://www.explorium.ai/blog/machine-learning/clustering-when-you-should-use-it-and-avoid-it/#:~:text=Clustering%20is%20an%20unsupervised%20machine,more%20easily%20understood%20and%20manipulated.)
-builtIn: How to Form Clusters in Python: Data Clustering Methods (https://builtin.com/data-science/data-clustering-python)
-Google Developers: Clustering Algorithms (https://developers.google.com/machine-learning/clustering/clustering-algorithms)
+explorium: Clustering — When You Should Use it and Avoid It (https://www.explorium.ai/blog/machine-learning/clustering-when-you-should-use-it-and-avoid-it/#:~:text=Clustering%20is%20an%20unsupervised%20machine,more%20easily%20understood%20and%20manipulated.) \
+builtIn: How to Form Clusters in Python: Data Clustering Methods (https://builtin.com/data-science/data-clustering-python) \
+Google Developers: Clustering Algorithms (https://developers.google.com/machine-learning/clustering/clustering-algorithms) \
 Analytics Vidhya: The Ultimate Guide to K-Means Clustering: Definition, Methods and Applications (https://www.analyticsvidhya.com/blog/2019/08/comprehensive-guide-k-means-clustering/#What_Is_K-Means_Clustering?)
 
 

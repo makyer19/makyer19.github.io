@@ -22,7 +22,7 @@ The Naive Bayes Classifier is a fairly simple model used in machine learning. Th
 Above we see the equation for Bayes' Theorem. Of course, we can begin by looking at the card scenario, but instead we will look at the utilization of Bayes' Theorem using penguins.
 
 ### Naive Bayes Classifier Applied to Penguins
-We will attempt to use Bayes' Theorem and a Naive Bayes Classifer to make predictions on a penguins species by the island they reside on, the culmen length, culmen depth, flipper length, and body mass. Before any of that, we will first import the dataset and all required libraries.
+We will attempt to use Bayes' Theorem and a Naive Bayes Classifier to make predictions on a penguins' species by the island they reside on, the culmen length, culmen depth, flipper length, and body mass. Before any of that, we will first import the dataset and all required libraries.
 
 ```{python}
 #| tags: []
@@ -43,6 +43,8 @@ penguins_data = penguins_data.dropna()
 ### Use Scatterplots to Observe Best Predictors
 To begin, we will utilize the Pandas scatter plot functions to create 4 scatter plots. Each scatter plot will plot a penguin's characteristic against its species. We can then observe these plots to observe if we can find any useful predictors before even creating the model.
 
+Note that as the penguin data must be numerical, the species name is not listed on the plots. Just know that the bottom most line are the Adelie, the middle are the Chinstrap, and the uppermost are the Gentoo
+
 ```{python}
 #| tags: []
 penguins_data.plot.scatter(x='culmen_length_mm',y='species')
@@ -52,10 +54,10 @@ penguins_data.plot.scatter(x='body_mass_g',y='species')
 ```
 
 ### Analyzing the Scatter Plots
-Looking at the scatter plots, we find multiple useful predictors. First of all, it seems quite easy to differentiate between Gentoo and Adelie penguins as each of their measured traits appear to oppose one another. Adelie have a lower body mass while Gentoo are heavier. Adelie have shorter flippers and culmen, while Gentoo have longer flippers and culmen. Finally, Adelie generally have greater culmen depth while Gentoo do not. Therefore, a penguin with a low body mass, short flipper, short culmen, and large culmen depth, is likely to be an Adelie. However, Chinstrap penguins tend to be quite similar to Adelie penguins in each measurment, except for culmen length which is more similar to the Gentoo. Therefore, by these scatterplots alone, we can determine that, assuming the model functions correctly, the accuracy should be relatively high as the predictors seem to be quite good. Remember that Bayes' Theorem is essentially predicting y based on a hypothesis given that some data has already occurred. In our case, the model will be asked questions such as "What is the probability that the penguin is of the Adelie species given a low body mass, shorted flipper length, short culmen length, and a large culmen depth?" Using multiple instances of Bayes' Theorem, we can say there is a high probability that the given penguin is in fact of the Adelie species. This is just one example, but it is essentially how the model will work behind the scenes.
+Looking at the scatter plots, we find multiple useful predictors. First of all, it seems quite easy to differentiate between Gentoo and Adelie penguins as each of their measured traits appear to oppose one another. Adelie have a lower body mass while Gentoo are heavier. Adelie have shorter flippers and culmen, while Gentoo have longer flippers and culmen. Finally, Adelie generally have greater culmen depth while Gentoo do not. Therefore, a penguin with a low body mass, short flipper, short culmen, and large culmen depth, is likely to be an Adelie. However, Chinstrap penguins tend to be quite similar to Adelie penguins in each measurement, except for culmen length which is more similar to the Gentoo. Therefore, by these scatter plots alone, we can determine that, assuming the model functions correctly, the accuracy should be relatively high as the predictors seem to be quite good. Remember that Bayes' Theorem is essentially predicting y based on a hypothesis given that some data has already occurred. In our case, the model will be asked questions such as "What is the probability that the penguin is of the Adelie species given a low body mass, shorted flipper length, short culmen length, and a large culmen depth?" Using multiple instances of Bayes' Theorem, we can say there is a high probability that the given penguin is in fact of the Adelie species. This is just one example, but it is essentially how the model will work behind the scenes.
 
 ### Using a Naive Bayes Classifier to Predict a Penguins Species
-Now that we have looked at the raw data, we will use that data to create a model to predict a penguin's species by their measurments. To begin, we will replace all of the non numerical data with numerical data to allow it to be used in the model creation. Then we will split the data into training and test sets using train_test_split(). Then we will create a GaussianNB (Gaussian Naive Bayes) model, and train it. Finally, we will make our predictions using the model and analyze the results.
+Now that we have looked at the raw data, we will use that data to create a model to predict a penguin's species by their measurements. To begin, we will replace all of the non-numerical data with numerical data to allow it to be used in the model creation. Then we will split the data into training and test sets using train_test_split(). Then we will create a GaussianNB (Gaussian Naive Bayes) model, and train it. Finally, we will make our predictions using the model and analyze the results.
 
 ```{python}
 #| tags: []
@@ -88,7 +90,8 @@ Looking at the results of the model, we see that it performed relatively well. W
 
 ### Conclusion
 After discussing the basics of probability theory, random variables, and Bayes' Theorem, we can see how all of that can be utilized in the context of machine learning. Of course, this is only the tip of the statistical/machine learning iceberg, but if you would like to observe some of the resources I used in the creation of this blog post, I will link them here.
-Pengiun Dataset - https://www.kaggle.com/datasets/parulpandey/palmer-archipelago-antarctica-penguin-data/
-Brown University Probability Theory - https://seeing-theory.brown.edu/basic-probability/index.html
+
+Pengiun Dataset - https://www.kaggle.com/datasets/parulpandey/palmer-archipelago-antarctica-penguin-data/ \
+Brown University Probability Theory - https://seeing-theory.brown.edu/basic-probability/index.html \
 Naive Bayes Classifier Learning Tutorial - https://www.datacamp.com/tutorial/naive-bayes-scikit-learn
 

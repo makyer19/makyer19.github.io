@@ -2,6 +2,7 @@
   {
     "listing": "/index.html",
     "items": [
+      "/posts/outlier-detection/index.html",
       "/posts/clustering/index.html",
       "/posts/ensemble-models/index.html",
       "/posts/linear-regression/index.html",
